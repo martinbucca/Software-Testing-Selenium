@@ -19,30 +19,94 @@ import static org.junit.Assert.assertTrue;
 
 
 public class FirstSeleniumTest {
-    public WebDriver driver;
+
+    private WebDriver driver;
+    private WebDriverWait wait;
+
+    private By usernameLocator = By.id("username");
+    private By passwordLocator = By.id("password");
+    private By loginButtonLocator = By.id("submit");
+    private By postTitle = By.className("post-title");
 
     @Before
-    public void setup()  throws MalformedURLException  {
+    public void Setup() throws MalformedURLException {
         ChromeOptions options = new ChromeOptions();
-        driver = new RemoteWebDriver(new URL("http://selenium:4444/wd/hub"), options);
-        driver.manage().window().maximize();
+        this.driver = new RemoteWebDriver(new URL("http://selenium:4444/wd/hub"), options);
+        this.driver.manage().window().maximize();
+        this.wait = new WebDriverWait(driver, 10);
     }
 
+    private WebElement waitAndReturnElement(By locator) {
+        this.wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        return this.driver.findElement(locator);
+    }
 
     @Test
-    public void simpleTest() {
-        assertTrue(true);
+    public void testLoginWithValidCredentials() {
+        this.driver.get("https://practicetestautomation.com/practice-test-login/");
+
+        WebElement usernameInputElement = waitAndReturnElement(usernameLocator);
+        usernameInputElement.sendKeys("student");
+
+        WebElement passwordInputElement = waitAndReturnElement(passwordLocator);
+        passwordInputElement.sendKeys("Password123");
+
+        WebElement loginButton = this.driver.findElement(loginButtonLocator);
+        loginButton.click();
+
+        WebElement postTitleMessage = waitAndReturnElement(postTitle);
+
+        assertTrue(postTitleMessage.getText().contains("Logged In Successfully"));
+
+        //WebElement logoutButton = waitAndReturnElement(logoutButtonLocator);
+        //logoutButton.click();
+
     }
 
+    /*
+    @Test
+    public void testLoginWithInvalidUsername() {
+        this.driver.get("https://practicetestautomation.com/practice-test-login/");
 
+        WebElement usernameInputElement = waitAndReturnElement(usernameLocator);
+        usernameInputElement.sendKeys("martinbucca");
+
+        WebElement passwordInputElement = waitAndReturnElement(passwordLocator);
+        passwordInputElement.sendKeys("Password123");
+
+        WebElement loginButton = this.driver.findElement(loginButtonLocator);
+        loginButton.click();
+
+
+        WebElement flashMessageElement = waitAndReturnElement(flashMessageLocator);
+        assertTrue(flashMessageElement.getText().contains("Your username is invalid!"));
+
+    }
+
+    @Test
+    public void testLoginWithInvalidPassword() {
+        this.driver.get("http://the-internet.herokuapp.com/login");
+
+        WebElement usernameInputElement = waitAndReturnElement(usernameLocator);
+        usernameInputElement.sendKeys("tomsmith");
+
+        WebElement passwordInputElement = waitAndReturnElement(passwordLocator);
+        passwordInputElement.sendKeys("invalidpassword");
+
+        WebElement loginButton = this.driver.findElement(loginButtonLocator);
+        loginButton.click();
+
+        WebElement flashMessageElement = waitAndReturnElement(flashMessageLocator);
+        assertTrue(flashMessageElement.getText().contains("Your password is invalid!"));
+    }
+    */
 
 
     @After
     public void close() {
-        if (driver != null) {
-            driver.quit();
+        if (this.driver != null) {
+            this.driver.quit();
         }
     }
-
 
 }
