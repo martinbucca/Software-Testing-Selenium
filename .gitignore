@@ -1,3 +1,13 @@
+.idea
+.gradle
+gradle
+gradlew.bat
+gradlew
+build/
+
+
+
+
 # Compiled class file
 *.class
 
