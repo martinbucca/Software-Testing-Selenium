@@ -5,15 +5,15 @@ Software Testing using selenium with Java. Website tested: https://practicetesta
 # Run with Docker
 
 ### Step 1:
-Copy gradle project into **tests/** folder.
-
-### Step 2:
 ``` 
 docker compose up
-docker exec -it [container name] bash
+```
+### Step 2:
+``` 
+docker exec -it selenium-big-assignment-ubuntu-1 bash
 ```
 ### Step 3:
-```cd tests/gradle_project_name```
+```cd tests```
 
 ### Step 4:
 ```gradle test```
