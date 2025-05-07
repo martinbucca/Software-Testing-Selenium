@@ -15,6 +15,7 @@ import org.junit.*;
 public class FirstSeleniumTest {
     private WebDriver driver;
     private LoginPage loginPage;
+    private HomePage homePage;
 
     @Before
     public void setUp() throws MalformedURLException {
@@ -48,6 +49,28 @@ public class FirstSeleniumTest {
 
         String pageTitle = returnedLoginPage.getPageTitle();
         assertEquals("Page title after logout should match login page title", "Test Login | Practice Test Automation", pageTitle);
+    }
+
+    @Test
+    public void testSendNewsletterForm() {
+        homePage = new HomePage(driver);
+
+        homePage.enterName("John Doe");
+        homePage.enterEmail("johndoe@gmail.com");
+        CaptchaPage captchaPage = homePage.clickSubmit();
+
+        String captchaText = captchaPage.getCaptchaMessage();
+        // TODO: Check message for the captcha ("...you're...'")
+        assertTrue("Expected captcha text to contain 'Captcha' but was: " + captchaText,
+                captchaText.contains("not a robot"));
+
+    }
+
+    @Test
+    public void testHomePageIsOpenedCorrectly() {
+        homePage = new HomePage(driver);
+        String pageTitle = homePage.getPageTitle();
+        assertEquals("Page title should match the expected title", "Practice Test Automation | Learn Selenium WebDriver", pageTitle);
     }
 
     @After
