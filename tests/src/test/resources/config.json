@@ -1,0 +1,20 @@
+{
+  "baseUrl": "https://practicetestautomation.com",
+  "pagesToTest": [
+    {
+      "name": "Login Page",
+      "path": "/practice-test-login/",
+      "expectedTitle": "Test Login | Practice Test Automation"
+    },
+    {
+      "name": "Logged In Page",
+      "path": "/logged-in-successfully/",
+      "expectedTitle": "Logged In Successfully | Practice Test Automation"
+    },
+    {
+      "name": "Practice Page",
+      "path": "/practice/",
+      "expectedTitle": "Practice | Practice Test Automation"
+    }
+  ]
+}
