@@ -5,6 +5,9 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import org.json.simple.JSONArray;
+import java.util.ArrayList;
+
 
 public class ConfigReader {
     private static JSONObject config;
@@ -23,7 +26,11 @@ public class ConfigReader {
     }
 
     public static List<JSONObject> getPagesToTest() {
-        return (List<JSONObject>) config.get("pagesToTest");
+        JSONArray pagesArray = (JSONArray) config.get("pagesToTest");
+        List<JSONObject> pages = new ArrayList<>();
+        for (Object pageObj : pagesArray) {
+            pages.add((JSONObject) pageObj);
+        }
+        return pages;
     }
-
 }

@@ -81,20 +81,49 @@ public class FirstSeleniumTest {
     @Test
     public void testContactForm() {
         contactPage = new ContactPage(driver);
+
         contactPage.enterFirstName("John");
         contactPage.enterLastName("Doe");
         contactPage.enterEmail("johndoe@gmail.com");
         contactPage.enterMessage("This is a test message.");
+
         contactPage.submitForm();
+
         contactPage.waitForCaptchaErrorMessage();
         contactPage.waitForCaptchaErrorLabel();
+
         String errorMessage = contactPage.getCaptchaErrorMessage();
         String errorLabel = contactPage.getCaptchaErrorLabel();
+
         assertTrue("Expected error message to contain 'Captcha' but was: " + errorMessage,
                 errorMessage.contains("Form has not been submitted, please see the errors below."));
         assertTrue("Expected error label to contain 'Captcha' but was: " + errorLabel,
                 errorLabel.contains("Google reCAPTCHA verification failed, please try again later."));
     }
+
+    @Test
+    public void testStaticPagesFromConfig() {
+        String baseUrl = ConfigReader.getBaseUrl();
+        List<JSONObject> pages = ConfigReader.getPagesToTest();
+
+        for (JSONObject page : pages) {
+            String pageName = (String) page.get("name");
+            String path = (String) page.get("path");
+            String expectedTitle = (String) page.get("expectedTitle");
+            String pageUrl = baseUrl + path;
+
+            driver.get(pageUrl);
+
+            String actualTitle = driver.getTitle();
+
+            assertEquals(
+                    "Page title mismatch for " + pageName + " (" + pageUrl + ")",
+                    expectedTitle,
+                    actualTitle
+            );
+        }
+    }
+
 
 
 
