@@ -124,6 +124,36 @@ public class FirstSeleniumTest {
         }
     }
 
+    @Test
+    public void testLoginWithRandomInvalidUsername() {
+        loginPage = new LoginPage(driver);
+
+        String randomUsername = RandomDataGenerator.randomAlphanumeric(8);
+        String password = "Password123";
+
+        loginPage.enterUsername(randomUsername);
+        loginPage.enterPassword(password);
+        loginPage.clickSubmit();
+
+        String errorMessage = loginPage.getErrorMessage();
+        assertTrue("Expected error message 'Your username is invalid!' but was: " + errorMessage, errorMessage.contains("Your username is invalid!"));
+    }
+
+    @Test
+    public void testLoginWithRandomInvalidPassword() {
+        loginPage = new LoginPage(driver);
+
+        String username = "student";
+        String randomPassword = RandomDataGenerator.randomPassword();
+
+        loginPage.enterUsername(username);
+        loginPage.enterPassword(randomPassword);
+        loginPage.clickSubmit();
+
+        String errorMessage = loginPage.getErrorMessage();
+        assertTrue("Expected error message 'Your password is invalid!' but was: " + errorMessage, errorMessage.contains("Your password is invalid!"));
+    }
+
 
 
 
